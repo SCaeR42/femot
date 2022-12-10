@@ -1,0 +1,44 @@
+[base]
+codeName = 'FORGET ME NOT - T26',
+debug = 2
+; print debug and disable mail sending
+debugPrint=false
+
+; interval, in days, waiting for a delay in sending
+sendInterval = 7
+; was reminded to the admin when the % interval was reached
+selfNoticePercents = 80
+# repeat sending over the next days 1 time per repeatRunsInterval days
+repeatRuns = 3
+repeatRunsInterval = 2
+; how many times the notification will be sent to the admin
+repeatSendNotice=2
+
+[dirs]
+; log directory
+;logDir = 'log'
+; directory of data to be sent in the letter
+;dataDir = 'data'
+;controlFile = 'last-check.lock'
+
+[dates]
+; date format: 2022-12-01
+dateStart = now
+dateEnd = false
+
+[emailRecipients]
+;emailRecipients[] = mail@domain.com
+
+[selfNoticeRecipients]
+;selfNoticeRecipients[] = mail@domain.com
+
+[callUrls]
+;callUrls[] = ''
+
+[execCommands]
+;execCommands[] = ''
+
+[email]
+emailFrom = femot@domain.com
+
+
