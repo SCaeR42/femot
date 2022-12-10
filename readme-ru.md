@@ -1,4 +1,4 @@
-# Femot (Forget-Me-Not)
+# Femot (Незабудка)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)[![version](https://img.shields.io/badge/version-1.0-blue)](https://img.shields.io/badge/version-1.0-blue)
 
