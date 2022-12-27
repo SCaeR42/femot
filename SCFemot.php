@@ -515,7 +515,7 @@ class Femot
 
 	//region Внешние функции вызова
 
-	//todo Немедленная отправка - немедлненно отправляет сообщение
+	//todo Немедленная отправка - немедленно отправляет сообщение
 	public static function sendAction()
 	{
 
@@ -538,7 +538,7 @@ class Femot
 		$params = $this->getParams();
 		$paramsLock = $this->getParamsLock();
 
-		//переключить на следующий интервал выолнения, только если текущая дата находится в текущем интервале
+		//переключить на следующий интервал выполнения, только если текущая дата находится в текущем интервале
 		$dateTimeNow = $this->getDate('NOW', true);
 		$intervalStart = $this->getDate($paramsLock['intervalStart'], true);
 		$intervalEnd = $this->getDate($paramsLock['intervalEnd'], true);

@@ -60,8 +60,8 @@ class FemotTest extends Femot
  * Обращения имитируются по 2-а в каждый час 15/45 мин
  *
  * 1-й прогон без продления
- * 2-й прогон с продлением на 50% интеравала и напоминалкой в 80 %
- * 3-й прогон с продлением на 90% интеравала и напоминалкой в 80 %
+ * 2-й прогон с продлением на 50% интервала и напоминалкой в 80 %
+ * 3-й прогон с продлением на 90% интервала и напоминалкой в 80 %
  * 4-й прогон п. 1-3 с датой окончания
  *
  */
@@ -73,7 +73,7 @@ $params = [
 	'codeName'           => 'FORGET ME NOT',
 	'debug'              => 1,
 	'debugPrint'         => true,
-	// 1 - удалить директории со стриптом и всеми данными
+	// 1 - удалить директории со скриптом и всеми данными
 	// 0 - дебаг отключен, 1 - только контроль вызовов, 2 - контроль вызовов и отправки, 3 - все данные
 	'selfDestroy'        => 0,
 
@@ -86,12 +86,12 @@ $params = [
 	'sendInterval'       => 7,
 	// интервал, в днях, ожидания отсрочки отправки
 	'selfNoticePercents' => 80,
-	// напомминался админу при достижении % интервала
+	// напоминания админу при достижении % интервала
 
 	// повторение отправки в течении последующих дней по 1 разу в день
 	'repeatRuns'         => 4,
 	'repeatSendNotice'   => 4,
-	// посторение отправки напоминалки
+	// повторение отправки напоминалки
 
 	// директория логов
 	'logDir'             => 'log',
@@ -109,7 +109,7 @@ $params = [
 	'execCommands'         => [],
 ];
 
-$femot = FemotTest::getInstance($params);
+$femot = FemotTest::getInstance();
 
 $oDateEnd = strtotime('NOW +' . (intval($params['sendInterval']) * 2 + 2) . ' day');
 $dateEnd = date('Y-m-d', $oDateEnd);
@@ -124,7 +124,7 @@ $testNow = $femot->getDateTestNow();
 
 $femot->printMess('Интервал проверки [sendInterval]: ' . $params['sendInterval']);
 $femot->printMess('Дата начала цикла проверки [$testNow]: ' . $femot->getDate($testNow));
-$femot->printMess('Дата отправкм продления [$oDateSendPostPone]: ' . $dateSendPostPone);
+$femot->printMess('Дата отправки продления [$oDateSendPostPone]: ' . $dateSendPostPone);
 $femot->printMess('Дата окончания цикла проверки [$oDateEnd]: ' . $dateEnd);
 
 $postponeSending = false;
