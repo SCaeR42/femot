@@ -30,7 +30,7 @@ class Femot
 		throw new Exception("Cannot serialize");
 	}
 
-	public static function getInstance($params = []): Femot
+	public static function getInstance($params = []):Femot
 	{
 		if (empty($params)) {
 			$params = parse_ini_file(__DIR__ . '/config.ini');
@@ -39,7 +39,7 @@ class Femot
 		$cls = 'Femot::' . md5(serialize($params));
 
 		if (!isset(self::$instances[$cls])) {
-			self::$instances[$cls] = new static();
+			self::$instances[$cls]      = new static();
 			self::$instances[$cls]->cls = $cls;
 			self::$instances[$cls]->setParams($params);
 			self::$instances[$cls]->checkControlFile();
@@ -55,7 +55,7 @@ class Femot
 			'debug'              => 0,
 			// вывод логов
 			'debugPrint'         => false,
-			// 1 - удалить директории со стриптом и всеми данными
+			// 1 - удалить директории со скриптом и всеми данными
 			// 0 - дебаг отключен, 1 - только контроль вызовов, 2 - контроль вызовов и отправки, 3 - все данные
 			'selfDestroy'        => 0,
 
@@ -68,13 +68,13 @@ class Femot
 			'sendInterval'       => 7,
 			// интервал, в днях, ожидания отсрочки отправки
 			'selfNoticePercents' => 90,
-			// напомминался админу при достижении % интервала
+			// напоминание админу при достижении % интервала
 
 			// повторение отправки в течении последующих дней по 1 разу в repeatRunsInterval дней
 			'repeatRuns'         => 0,
 			// интервал в днях через которое будут выполнены команды
 			'repeatRunsInterval' => 1,
-			// сколько раз будет отпраленно уведомление адмну
+			// сколько раз будет отправлено уведомление админу
 			'repeatSendNotice'   => 1,
 
 			// директория логов
@@ -113,7 +113,7 @@ class Femot
 	/**
 	 * @return array
 	 */
-	public function getParams(): array
+	public function getParams():array
 	{
 		return $this->params;
 	}
@@ -121,7 +121,7 @@ class Femot
 	/**
 	 * @return array
 	 */
-	public function getParamsLock(): array
+	public function getParamsLock():array
 	{
 		return $this->paramsLock;
 	}
@@ -129,7 +129,7 @@ class Femot
 	/**
 	 * @param array $paramsLock
 	 */
-	public function setParamsLock(array $paramsLock): void
+	public function setParamsLock(array $paramsLock):void
 	{
 		$this->paramsLock = $paramsLock;
 	}
@@ -142,7 +142,7 @@ class Femot
 	 * @created by: SCaeR
 	 * @since   version 1.0.0
 	 */
-	private function CheckCreateDir(string $path): void
+	private function CheckCreateDir(string $path):void
 	{
 		try {
 			if (!is_dir($path)) {
@@ -168,7 +168,7 @@ class Femot
 	 * @created by: SCaeR
 	 * @since   version 1.0.0
 	 */
-	private function CheckCreateFile(string $path): void
+	private function CheckCreateFile(string $path):void
 	{
 		try {
 			if (empty($path)) {
@@ -197,7 +197,7 @@ class Femot
 	/**
 	 * Логирование действий, для отладки и не только
 	 *
-	 * @param $mess
+	 * @param     $mess
 	 * @param int $debugLevel
 	 *
 	 * @return void
@@ -205,7 +205,7 @@ class Femot
 	 * @created by: SCaeR
 	 * @since   version 1.0.0
 	 */
-	private function addLog($mess, int $debugLevel = 0): void
+	private function addLog($mess, int $debugLevel = 0):void
 	{
 		$params = $this->getParams();
 
@@ -236,7 +236,8 @@ class Femot
 		file_put_contents($logFile, $mess, FILE_APPEND);
 	}
 
-	public function printMess($mess) {
+	public function printMess($mess)
+	{
 		$sapi = php_sapi_name();
 		if ($sapi == 'cli') {
 			echo $mess . "\r\n";
@@ -250,7 +251,7 @@ class Femot
 
 	/**
 	 * @param string $date
-	 * @param bool $retStrToTime
+	 * @param bool   $retStrToTime
 	 * @param string $format
 	 *
 	 * @return false|string
@@ -318,7 +319,7 @@ class Femot
 	 * @created by: SCaeR
 	 * @since   version 1.0.0
 	 */
-	public function saveParamsLock($paramsLock): void
+	public function saveParamsLock($paramsLock):void
 	{
 		$params = $this->getParams();
 
@@ -351,9 +352,9 @@ class Femot
 	 * @created by: SCaeR
 	 * @since   version 1.0.0
 	 */
-	private function sendNotice(): bool
+	private function sendNotice():bool
 	{
-		$params = $this->getParams();
+		$params     = $this->getParams();
 		$paramsLock = $this->getParamsLock();
 
 		$selfNoticeRecipients = $params['selfNoticeRecipients'];
@@ -362,7 +363,7 @@ class Femot
 		}
 
 		$entries = scandir($params['dataDir'] . '/emailNotice');
-		$files = array_diff($entries, array(
+		$files   = array_diff($entries, array(
 			'.',
 			'..'
 		));
@@ -383,7 +384,7 @@ class Femot
 		return $this->sendMail($mailParams);
 	}
 
-	private function runActions(): bool
+	private function runActions():bool
 	{
 		$this->addLog('Выполнение транзакций', 1);
 
@@ -400,9 +401,9 @@ class Femot
 	 * @created by: SCaeR
 	 * @since   version 1.0.0
 	 */
-	private function sendData(): void
+	private function sendData():void
 	{
-		$params = $this->getParams();
+		$params     = $this->getParams();
 		$paramsLock = $this->getParamsLock();
 
 		$emailRecipients = $params['emailRecipients'];
@@ -411,7 +412,7 @@ class Femot
 		}
 
 		$entries = scandir($params['dataDir'] . '/dataToSend');
-		$files = array_diff($entries, array(
+		$files   = array_diff($entries, array(
 			'.',
 			'..'
 		));
@@ -445,24 +446,24 @@ class Femot
 	 * @created by: SCaeR
 	 * @since   version 1.0.0
 	 */
-	private function sendMail(array $mailParams): bool
+	private function sendMail(array $mailParams):bool
 	{
-		$ret = false;
+		$ret    = false;
 		$params = $this->getParams();
 
-		$from = $mailParams['from'];
+		$from       = $mailParams['from'];
 		$recipients = $mailParams['recipients'];
-		$subject = $mailParams['subject'];
-		$body = $mailParams['body'];
+		$subject    = $mailParams['subject'];
+		$body       = $mailParams['body'];
 
 		$headers = "From: $from \r\n";
 		$headers .= "Reply-To: $from\r\n";
 		$headers .= "MIME-Version: 1.0\r\n";
 
-		$files = $mailParams['files'];
-		$addFiles = false;
-		$boundary = "--" . md5(uniqid(time())); // разделитель
-		$multipart = '';
+		$files        = $mailParams['files'];
+		$addFiles     = false;
+		$boundary     = "--" . md5(uniqid(time())); // разделитель
+		$multipart    = '';
 		$message_part = '';
 		if (!empty($files)) {
 
@@ -473,7 +474,7 @@ class Femot
 
 			foreach ($files as $filepath) {
 				$filename = basename($filepath);
-				$fp = fopen($filepath, "r");
+				$fp       = fopen($filepath, "r");
 				if (!$fp) {
 					echo("Не удается открыть файл");
 					exit;
@@ -494,11 +495,11 @@ class Femot
 		}
 
 		if (!$addFiles) {
-			$headers .= "Content-type: text/html; charset=UTF-8\r\n";
+			$headers   .= "Content-type: text/html; charset=UTF-8\r\n";
 			$multipart = $body;
 		}
 		else {
-			$headers .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\n";
+			$headers   .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\n";
 			$multipart .= $message_part . "--$boundary--\n";
 		}
 
@@ -535,17 +536,17 @@ class Femot
 	{
 		$this->addLog('Попытка продления', 2);
 
-		$params = $this->getParams();
+		$params     = $this->getParams();
 		$paramsLock = $this->getParamsLock();
 
 		//переключить на следующий интервал выполнения, только если текущая дата находится в текущем интервале
-		$dateTimeNow = $this->getDate('NOW', true);
+		$dateTimeNow   = $this->getDate('NOW', true);
 		$intervalStart = $this->getDate($paramsLock['intervalStart'], true);
-		$intervalEnd = $this->getDate($paramsLock['intervalEnd'], true);
+		$intervalEnd   = $this->getDate($paramsLock['intervalEnd'], true);
 
 		if ($dateTimeNow > $intervalStart && $dateTimeNow < $intervalEnd) {
 			$paramsLock['intervalStart'] = $this->getDate($paramsLock['intervalEnd']);
-			$paramsLock['intervalEnd'] = $this->getDate($paramsLock['intervalEnd'] . ' +' . $params['sendInterval'] . ' day');
+			$paramsLock['intervalEnd']   = $this->getDate($paramsLock['intervalEnd'] . ' +' . $params['sendInterval'] . ' day');
 
 			$this->saveParamsLock($paramsLock);
 
@@ -576,20 +577,20 @@ class Femot
 	{
 		$this->addLog('Проверка продления: checkNeedToSend', 2);
 
-		$params = $this->getParams();
+		$params     = $this->getParams();
 		$paramsLock = $this->getParamsLock();
 
-		$dateTimeNow = $this->getDate('NOW', true);
+		$dateTimeNow    = $this->getDate('NOW', true);
 		$dateTimeNowStr = $this->getDate('NOW');
-		$intervalStart = $this->getDate($paramsLock['intervalStart'], true);
-		$intervalEnd = $this->getDate($paramsLock['intervalEnd'], true);
+		$intervalStart  = $this->getDate($paramsLock['intervalStart'], true);
+		$intervalEnd    = $this->getDate($paramsLock['intervalEnd'], true);
 
 		// Сверка даты из файла проверки с текущей датой
 		if ($dateTimeNow > $intervalEnd) {
 			if ($paramsLock['runCount'] < $params['repeatRuns']) {
 
 				//по 1 разу в день
-				$dateRunActionsStr = $this->getDate($paramsLock['dateTimeRunActions'] . ' +' . $params['repeatRunsInterval'] . ' day');
+				$dateRunActionsStr = $this->getDate($paramsLock['dateTimeRunActions'] . ' +' . ($params['repeatRunsInterval'] - 1) . ' day');
 
 				if ($dateRunActionsStr < $dateTimeNowStr || $paramsLock['runCount'] < 1) {
 
@@ -597,20 +598,20 @@ class Femot
 					$runActions = $this->runActions();
 
 					//					if ($runActions) {
-					//добавление отметки что транзакции запущены
+					//добавление отметки, что транзакции запущены
 					$paramsLock['dateTimeRunActions'] = $this->getDate();
-					$paramsLock['runCount'] = $paramsLock['runCount'] + 1;
+					$paramsLock['runCount']           = $paramsLock['runCount'] + 1;
 					$this->saveParamsLock($paramsLock);
 					//					}
 				}
 			}
 		}
 		else {
-			// если текущая дата меньше даты окончания текущего интервала: проверить время до конца текущего интервала, и если прошло больше чем задано в параметре selfNoticePercents то отправить уведомления админу
+			// если текущая дата меньше даты окончания текущего интервала: проверить время до конца текущего интервала, и если прошло больше чем задано в параметре selfNoticePercents, то отправить уведомления админу
 			// Равномерная отправка уведомлений за оставшийся интервал
 
 			$selfNoticePercentsOnce = ceil((100 - $params['selfNoticePercents']) / $params['repeatSendNotice']);
-			$selfNoticePercents = $params['selfNoticePercents'] + ($selfNoticePercentsOnce * $paramsLock['sendNoticeCount']);
+			$selfNoticePercents     = $params['selfNoticePercents'] + ($selfNoticePercentsOnce * $paramsLock['sendNoticeCount']);
 
 			if ($paramsLock['sendNoticeCount'] < $params['repeatSendNotice']) {
 				if (($dateTimeNow - $intervalStart) > (($intervalEnd - $intervalStart) * $selfNoticePercents / 100)) {
@@ -621,9 +622,9 @@ class Femot
 					$sendNotice = self::sendNotice();
 
 					//					if ($sendNotice) {
-					//добавление отметки что уведомление отправленно
+					//добавление отметки, что уведомление отправлено
 					$paramsLock['dateTimeSendNotice'] = $this::getDate();
-					$paramsLock['sendNoticeCount'] = $paramsLock['sendNoticeCount'] + 1;
+					$paramsLock['sendNoticeCount']    = $paramsLock['sendNoticeCount'] + 1;
 
 					$this->saveParamsLock($paramsLock);
 					//					}

@@ -31,3 +31,4 @@ data/emailNotice/*
 !sendToRun.txt
 !sendToNotice.txt
 
+*.lock
